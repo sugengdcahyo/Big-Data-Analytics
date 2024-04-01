@@ -23,7 +23,10 @@ news = finnhub_client.general_news('general')
 json_rdd = sc.parallelize(news)
 df = spark.read.json(json_rdd)
 
-df.write.save(f"{os.getenv('HDFS_URL')}/output/finnews.json", format="json")
+# df.write.save(f"{os.getenv('HDFS_URL')}/output/finnews.json", format="json")
+
+df.write.mode('append').save(os.path.join(os.getenv('HDFS_URL'), "output/finnews.json"), format="json")
+
 
 # Stock candles
 # res = finnhub_client.stock_candles('AAPL', 'D', 1590988249, 1591852249)
